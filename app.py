@@ -122,7 +122,7 @@ input_df[numeric_cols] = scaler.transform(input_df[numeric_cols])
 # PREDICTION
 # ===============================
 prediction = model.predict(input_df)[0]
-prediction_proba = model.predict_proba(input_df)[1]
+prediction_proba = model.predict_proba(input_df[0])[1]
 
 st.subheader("🔍 Prediction Result")
 
