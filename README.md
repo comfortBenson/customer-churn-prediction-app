@@ -4,7 +4,7 @@ Overview:
 This project predicts the likelihood of telecommunication customers leaving the service (churn) using machine learning. The app provides actionable insights to help businesses retain customers by identifying high-risk customers early.
 
 Live Demo:
-    https://customer-churn-app-app-sdzs6cpc6hfcigx55a85dj.streamlit.app/
+    https://customer-churn-prediction-app-ck7xuqdreui5wjkfaamce4.streamlit.app/
 
 Project Structure:
     'scaler.pkl': The saved scaler for data preprocessing.
