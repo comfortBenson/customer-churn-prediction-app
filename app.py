@@ -6,32 +6,22 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import joblib
 
-# ===============================
-# LOAD SAVED MODEL & FILES
-# ===============================
 model = joblib.load("churn_model.pkl")
 scaler = joblib.load("scaler.pkl")
 model_columns = joblib.load("model_columns.pkl")
 
-# ===============================
-# STREAMLIT PAGE
-# ===============================
 st.set_page_config(page_title="Customer Churn Prediction", layout="centered")
 
 st.title("📊 Customer Churn Prediction App")
 st.write("Predict whether a telecom customer is likely to churn.")
 
-# ===============================
-# USER INPUTS
-# ===============================
-
-# ---- Numeric Inputs (VERY IMPORTANT ORDER)
+# Numeric Inputs (VERY IMPORTANT ORDER)
 SeniorCitizen = st.selectbox("Senior Citizen", ["No", "Yes"])
 tenure = st.number_input("Tenure (months)", min_value=0, max_value=100, value=12)
 MonthlyCharges = st.number_input("Monthly Charges", min_value=0.0, value=50.0)
 TotalCharges = st.number_input("Total Charges", min_value=0.0, value=600.0)
 
-# ---- Categorical Inputs
+# Categorical Inputs
 gender = st.selectbox("Gender", ["Male", "Female"])
 Partner = st.selectbox("Partner", ["Yes", "No"])
 Dependents = st.selectbox("Dependents", ["Yes", "No"])
@@ -56,9 +46,7 @@ PaymentMethod = st.selectbox(
     ]
 )
 
-# ===============================
 # BUILD INPUT DATAFRAME
-# ===============================
 input_dict = {
     "SeniorCitizen": 1 if SeniorCitizen == "Yes" else 0,
     "tenure": tenure,
@@ -107,20 +95,11 @@ input_dict = {
 
 input_df = pd.DataFrame([input_dict])
 
-# ===============================
-# ALIGN WITH TRAINING FEATURES
-# ===============================
 input_df = input_df.reindex(columns=model_columns, fill_value=0)
 
-# ===============================
-# SCALE NUMERIC FEATURES (FIXED)
-# ===============================
 numeric_cols = ["SeniorCitizen", "tenure", "MonthlyCharges", "TotalCharges"]
 input_df[numeric_cols] = scaler.transform(input_df[numeric_cols])
 
-# ===============================
-# PREDICTION
-# ===============================
 prediction = model.predict(input_df)[0]
 prediction_proba = model.predict_proba(input_df)[0][1]
 
@@ -133,9 +112,7 @@ else:
 
 st.write(f"*Churn Probability:* {prediction_proba:.2%}")
 
-# ===============================
-# FEATURE IMPORTANCE (OPTIONAL)
-# ===============================
+# FEATURE IMPORTANCE
 if st.checkbox("Show Feature Importance"):
     importances = model.feature_importances_
     top_features = pd.Series(importances, index=model_columns).sort_values(ascending=False)[:10]
